@@ -23,7 +23,7 @@ sb_template = "Service {{ service.name }} {% if service.overall_status == servic
 
 class StashboardAlert(AlertPlugin):
     name = "Stashboard"
-    author = "Daniel Nelson"
+    author = "Oleksandr Nagorodniuk"
 
     def send_alert(self, service, users, duty_officers):
 
@@ -67,7 +67,7 @@ class StashboardAlert(AlertPlugin):
         s.auth = OAuth1(u'anonymous', u'anonymous',
                 sb_token, sb_secret)
 
-        resp = s.get('%s/services/%s' % (sb_alert_url, key))
+        resp = s.get('%s/services/%s' % (sb_alert_url, service.name))
         if resp.status_code == 404:
             if not sb_create_services:
                 return
@@ -75,14 +75,15 @@ class StashboardAlert(AlertPlugin):
             # first create the service with the Cabot ID as the name
             s.post('%s/services' % (sb_alert_url),
                     data={
-                        'name': key,
+                        #'name': key,
+                        'name': service.name,
                         'description': service.url,
                     },
                     headers={'Content-Type':None}
                 )
 
             # now change the name to the name in Cabot
-            s.post('%s/services/%s' % (sb_alert_url, key),
+            s.post('%s/services/%s' % (sb_alert_url, service.name),
                     data={
                         'name': service.name,
                         'description': service.url,
@@ -98,7 +99,7 @@ class StashboardAlert(AlertPlugin):
         }
 
         s.post(
-                '%s/services/%s/events' % (sb_alert_url, key),
+                '%s/services/%s/events' % (sb_alert_url, service.name),
                 data=payload,
                 headers={'Content-Type':None}
             )
