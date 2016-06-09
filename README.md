@@ -1,7 +1,7 @@
 Cabot Stashboard Plugin
 =====
 
-sudo pip install git+https://github.com/onagorodniuk/cabot-alert-stashboard.git
+`sudo pip install git+https://github.com/onagorodniuk/cabot-alert-stashboard.git`
 
 Add to production.env CABOT_PLUGINS_ENABLED=cabot_alert_stashboard==0.1
 
